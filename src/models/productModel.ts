@@ -10,13 +10,14 @@ export interface IProduct {
 
 class ProductModel extends Model<IProduct> {
   public create = async (product: IProduct) => {
-    return this.post("", { ...product, barcode: Math.random() * 1000 });
+    return this.post("", { ...product, barcode: product.title });
   };
+
   public update = async (product: IProduct) => {
     return this.patch(product.id, {
       title: product.title,
       description: product.description,
-      barcode: product.barcode,
+      barcode: product.title,
       price: product.price,
     });
   };

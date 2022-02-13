@@ -60,11 +60,17 @@ export const ProductModal: FunctionComponent<IProps> = ({
         </div>
         <div className="form-field">
           <label htmlFor="description">description</label>
-          <input
+          <textarea
             id="description"
             name="description"
             value={product?.description}
             onChange={(e) => {
+              if (e.target.value.length > 300) {
+                alert(
+                  `Description too long (${e.target.value.length} characters), please keep it under 300`
+                );
+                return;
+              }
               setProduct({ ...product, description: e.target.value });
             }}
           />
