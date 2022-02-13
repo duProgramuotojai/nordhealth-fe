@@ -1,5 +1,6 @@
 import { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { NotificationView } from "../core/NotificationView";
+import { useSearch } from "../core/useSearch";
 import { geekModel } from "../models/geekModel";
 import { IProduct, productModel } from "../models/productModel";
 import { ProductModal } from "./ProductModal";
@@ -19,26 +20,10 @@ export const Products: FunctionComponent<IProps> = ({
   actions,
   topActions,
 }) => {
-  const [products, setProducts] = useState<IProduct[]>([]);
   const [filter, setFilter] = useState<string>("");
   const [notification, setNotification] = useState<string>("");
 
-  useEffect(() => {
-    load();
-  }, []);
-
-  useEffect(() => {
-    const search = async () => {
-      const prods = await productModel.search(filter);
-      setProducts(prods);
-    };
-    search();
-  }, [filter]);
-
-  const load = async () => {
-    const prods = await productModel.search();
-    setProducts(prods);
-  };
+  const { items: products, load } = useSearch(productModel, filter);
 
   const showNotification = (text: string) => {
     setNotification(text);
@@ -67,7 +52,7 @@ export const Products: FunctionComponent<IProps> = ({
       </div>
 
       <div className="products">
-        {products.map((p) => {
+        {products?.map((p) => {
           return (
             <div key={p.id} className="product">
               <div>
