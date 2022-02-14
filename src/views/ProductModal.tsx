@@ -54,6 +54,10 @@ export const ProductModal: FunctionComponent<IProps> = ({
             name="title"
             value={product?.title}
             onChange={(e) => {
+              if (e.target.value.length > 100) {
+                alert(`Name too long, please keep it short`);
+                return;
+              }
               setProduct({ ...product, title: e.target.value });
             }}
           />
@@ -82,8 +86,14 @@ export const ProductModal: FunctionComponent<IProps> = ({
             name="price"
             value={product?.price}
             type="number"
-            step="any"
+            step={0.01}
             onChange={(e) => {
+              if (e.target.value.split(".")?.[1]?.length > 2) {
+                alert(
+                  `${e.target.value} must have no more than 2 decimal digits`
+                );
+                return;
+              }
               setProduct({ ...product, price: parseFloat(e.target.value) });
             }}
           />

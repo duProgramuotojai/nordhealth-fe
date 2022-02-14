@@ -4,6 +4,7 @@ import { NotificationView } from "../core/NotificationView";
 import { useSearch } from "../core/useSearch";
 import { geekModel } from "../models/geekModel";
 import { IProduct, productModel } from "../models/productModel";
+import { ProductCard } from "./ProductCard";
 import { ProductModal } from "./ProductModal";
 
 interface IProps {
@@ -43,7 +44,10 @@ export const Products: FunctionComponent<IProps> = ({
     <>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <div style={{ marginBottom: 16 }}>
+          <label htmlFor="search">Search</label>
           <input
+            style={{ marginLeft: 4 }}
+            id="search"
             type="search"
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
@@ -55,17 +59,14 @@ export const Products: FunctionComponent<IProps> = ({
       <div className="products">
         {products?.map((p) => {
           return (
-            <div key={p.id} className="product">
-              <div>
-                <div className="product-title">{p.title}</div>
-                <div className="product-description">{p.description}</div>
-              </div>
-
-              <div className="product-price">{`${p.price} EUR`}</div>
-              {actions?.(p, load, showNotification)}
-            </div>
+            <ProductCard
+              key={p.id}
+              product={p}
+              actions={actions?.(p, load, showNotification)}
+            />
           );
         })}
+
         {mode === "admin" && (
           <ProductModal
             id={modalIsOpen}

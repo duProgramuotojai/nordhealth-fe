@@ -30,7 +30,9 @@ class GeekModel extends Model<IGeek> {
   public cart = async (id: string) => {
     const itemsInCart = await this.get<IProduct[]>(`${id}/cart`);
 
-    const total = itemsInCart.map((c) => c.price).reduce((a, b) => a + b, 0);
+    const total = itemsInCart
+      .map((c) => c.price)
+      .reduce((a, b) => parseFloat((a + b).toFixed(2)), 0);
     const cartItems = itemsInCart.reduce((list, product) => {
       const currentListItem = list.find((l) => l.product.id === product.id);
       if (currentListItem) {
